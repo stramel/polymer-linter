@@ -14,17 +14,39 @@
 
 import './collections';
 
-import {Analyzer, Document, Severity, Warning, WarningCarryingException} from 'polymer-analyzer';
+import {Analyzer, comparePositionAndRange, Directive, Document, Severity, Warning, WarningCarryingException} from 'polymer-analyzer';
 
 import {Rule} from './rule';
 
 export {registry} from './registry';
 export {Rule, RuleCollection} from './rule';
 
+/*
+ * TODO: This function is currently O(n*m), and it's being run for each rule
+ * on each document. Rewrite to be more performant. */
+function filterRuleWarningsByDirectives(
+    rule: Rule, warnings: Warning[], directives: Set<Directive>) {
+  return warnings.filter((warning: Warning) => {
+    let isValid = true;
+    for (const directive of directives) {
+      const [directiveCommand, ...directiveArgs] = directive.args!;
+      const doesDirectiveEffectRule =
+          (directiveArgs.length === 0 || directiveArgs.includes(rule.code));
+      const doesDirectiveComeBeforeWarning =
+          comparePositionAndRange(
+              directive.sourceRange!.end, warning.sourceRange) !== 1;
+
+      if (doesDirectiveEffectRule && doesDirectiveComeBeforeWarning) {
+        isValid = (directiveCommand === 'enable');
+      }
+    }
+    return isValid;
+  });
+};
 /**
- * The Linter is a simple class which groups together a set of Rules and applies
- * them to a set of file urls which can be resolved and loaded by the provided
- * Analyzer.  A default Analyzer is prepared if one is not provided.
+ * The Linter is a simple class which groups together a set of Rules and
+ * applies them to a set of file urls which can be resolved and loaded by the
+ * provided Analyzer.  A default Analyzer is prepared if one is not provided.
  */
 export class Linter {
   private _analyzer: Analyzer;
@@ -56,13 +78,18 @@ export class Linter {
   }
 
   private async _lintDocuments(documents: Iterable<Document>) {
-    const warnings: Warning[] = [];
+    const allWarnings: Warning[] = [];
     for (const document of documents) {
+      const directives =
+          document.getFeatures({kind: 'directive', id: 'polymer-lint'});
       for (const rule of this._rules) {
         try {
-          warnings.push(...await rule.check(document));
+          const ruleWarnings = await rule.check(document);
+          const filteredRuleWarnings =
+              filterRuleWarningsByDirectives(rule, ruleWarnings, directives);
+          allWarnings.push(...filteredRuleWarnings);
         } catch (e) {
-          warnings.push(this._getWarningFromError(
+          allWarnings.push(this._getWarningFromError(
               e,
               document.url,
               'internal-lint-error',
@@ -70,7 +97,7 @@ export class Linter {
         }
       }
     }
-    return warnings;
+    return allWarnings;
   }
 
   private async _analyzeAll(files: string[]) {

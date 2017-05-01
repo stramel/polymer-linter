@@ -17,6 +17,7 @@ import * as path from 'path';
 import {Analyzer, Document, FSUrlLoader, Severity, Warning} from 'polymer-analyzer';
 
 import {Linter} from '../linter';
+import {registry} from '../registry';
 import {Rule} from '../rule';
 
 import {WarningPrettyPrinter} from './util';
@@ -105,5 +106,55 @@ suite('Linter', () => {
         'bower_components/external.html'
       ].sort());
     });
+
+    suite('comment directives', () => {
+
+      test('gives no warnings below a disable-all directive', async() => {
+        const linter = new Linter(
+            registry.getRules(
+                ['dom-module-invalid-attrs', 'behaviors-spelling']),
+            analyzer);
+        const warnings =
+            await linter.lint(['comment-directives/disable-all.html']);
+        assert.deepEqual(warnings, []);
+      });
+
+      test('properly applies directives to inline documents', async() => {
+        const linter = new Linter(
+            registry.getRules(
+                ['dom-module-invalid-attrs', 'behaviors-spelling']),
+            analyzer);
+        const warnings = await linter.lint(
+            ['comment-directives/inline-documents-inherit.html']);
+        assert.deepEqual(warnings, []);
+      });
+
+      test(
+          'properlies applies directives from inline documents to the parent document',
+          async() => {
+            const linter = new Linter(
+                registry.getRules(
+                    ['dom-module-invalid-attrs', 'behaviors-spelling']),
+                analyzer);
+            const warnings = await linter.lint(
+                ['comment-directives/inline-documents-interweve.html']);
+            const warningsData =
+                warnings.map(({code, message}) => ({code, message}));
+            assert.deepEqual(warningsData, [
+              {
+                code: 'dom-module-invalid-attrs',
+                message:
+                    'Use the "id" attribute rather than "name" to associate the tagName of an element with its dom-module.',
+              },
+              {
+                code: 'behaviors-spelling',
+                message: '"behaviours" property should be spelled "behaviors"',
+              }
+            ]);
+          });
+
+    });
+
   });
+
 });
