@@ -1,0 +1,71 @@
+<script>
+  class MyApp extends HTMLElement {
+    static get is() {
+      return 'my-app';
+    }
+
+    checkInstance() {
+      Polymer.instanceof(this, HTMLElement);
+      Polymer.isInstance(this);
+    }
+
+    // getInfo() {
+    //   return this.getPropertyInfo(this.prop);
+    // }
+
+    // getPrototype(el) {
+    //   return this.getNativePrototype(el.tagName);
+    // }
+
+    // followAttribute(name, toEl, fromEl) {
+    //   this.attributeFollows(name, toEl, fromEl);
+    //   this.attributeFollows('attr', toEl, fromEl);
+    // }
+
+    // followClass(name, toEl, fromEl) {
+    //   this.classFollows(name, toEl, fromEl);
+    //   this.classFollows('selected', toEl, fromEl);
+    // }
+
+    // doAsyncWork() {
+    //   this.async(this.doWork);
+    //   this.async(this.doWork, 100);
+    //   Polymer.Async.microTask.run(() => this.doWork());
+    //   Polymer.Async.microTask.run(() => this.doWork(), 200);
+    // }
+
+    // debounceCalls() {
+    //   this.debounce('job1', this.doWork);
+    //   this.debounce('job2', this.doWork, 100);
+    //   this.debounce('job3', () => this.doWork(), 200);
+    // }
+
+    // fireEvent() {
+    //   this.fire('some-event');
+    // }
+
+    // importDocument() {
+    //   this.importHref('some/resolved/url', onload, onerror, true);
+    // }
+
+    getElementBySelector(selector) {
+      return this.$$(selector);
+    }
+
+    // getShadowRoot() {
+    //   return Polymer.dom(this.root);
+    // }
+
+    // getSlotChildren() {
+    //   return this.getContentChildren();
+    // }
+
+    // getChildren() {
+    //   return this.getEffectiveChildren();
+    // }
+
+    // observeNode(node) {
+    //   Polymer.dom(node).observeNode(this.doWork);
+    // }
+  }
+</script>

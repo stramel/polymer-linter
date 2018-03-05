@@ -14,29 +14,30 @@
 
 import './rules';
 
-import {registry} from './registry';
-import {RuleCollection} from './rule';
+import { registry } from './registry';
+import { RuleCollection } from './rule';
 
 registry.register(
     new RuleCollection('polymer-2', `Rules for projects that use Polymer 2.x`, [
-      'behaviors-spelling',
-      'call-super-in-callbacks',
-      'content-to-slot-declarations',
-      'content-to-slot-usages',
-      'content-selector-to-slotted',
-      'create-element-extension',
-      'databind-with-unknown-property',
-      'databinding-calls-must-be-functions',
-      'deprecated-css-custom-property-syntax',
-      'deprecated-shadow-dom-selectors',
-      'dom-calls-to-native',
-      'dom-module-invalid-attrs',
-      'element-before-dom-module',
-      'paper-toolbar-v1-to-v2',
-      'set-unknown-attribute',
-      'style-into-template',
-      'unbalanced-polymer-delimiters',
-      'undefined-elements',
+        'behaviors-spelling',
+        'call-super-in-callbacks',
+        'content-to-slot-declarations',
+        'content-to-slot-usages',
+        'content-selector-to-slotted',
+        'create-element-extension',
+        'databind-with-unknown-property',
+        'databinding-calls-must-be-functions',
+        'deprecated-css-custom-property-syntax',
+        'deprecated-shadow-dom-selectors',
+        'dom-calls-to-native',
+        'dom-module-invalid-attrs',
+        'element-before-dom-module',
+        'paper-toolbar-v1-to-v2',
+        'removed-apis',
+        'set-unknown-attribute',
+        'style-into-template',
+        'unbalanced-polymer-delimiters',
+        'undefined-elements',
     ]));
 
 registry.register(new RuleCollection(
@@ -45,22 +46,22 @@ registry.register(new RuleCollection(
 
 Will warn about use of deprecated Polymer 1.x features or brand new features in Polymer 2.x`,
     [
-      'behaviors-spelling',
-      'content-to-slot-declarations',
-      'content-to-slot-usages',
-      'content-selector-to-slotted',
-      'create-element-extension',
-      'databinding-calls-must-be-functions',
-      'databind-with-unknown-property',
-      'deprecated-css-custom-property-syntax',
-      'deprecated-shadow-dom-selectors',
-      'dom-module-invalid-attrs',
-      'element-before-dom-module',
-      'paper-toolbar-v1-to-v2',
-      'set-unknown-attribute',
-      'style-into-template',
-      'unbalanced-polymer-delimiters',
-      'undefined-elements',
+        'behaviors-spelling',
+        'content-to-slot-declarations',
+        'content-to-slot-usages',
+        'content-selector-to-slotted',
+        'create-element-extension',
+        'databinding-calls-must-be-functions',
+        'databind-with-unknown-property',
+        'deprecated-css-custom-property-syntax',
+        'deprecated-shadow-dom-selectors',
+        'dom-module-invalid-attrs',
+        'element-before-dom-module',
+        'paper-toolbar-v1-to-v2',
+        'set-unknown-attribute',
+        'style-into-template',
+        'unbalanced-polymer-delimiters',
+        'undefined-elements',
     ]));
 
 registry.register(new RuleCollection(
@@ -70,11 +71,11 @@ registry.register(new RuleCollection(
 For projects that are ready to start transitioning to Polymer 2.0 see polymer-2-hybrid.
 `,
     [
-      'behaviors-spelling',
-      'databinding-calls-must-be-functions',
-      'databind-with-unknown-property',
-      'element-before-dom-module',
-      'set-unknown-attribute',
-      'unbalanced-polymer-delimiters',
-      'undefined-elements',
+        'behaviors-spelling',
+        'databinding-calls-must-be-functions',
+        'databind-with-unknown-property',
+        'element-before-dom-module',
+        'set-unknown-attribute',
+        'unbalanced-polymer-delimiters',
+        'undefined-elements',
     ]));
